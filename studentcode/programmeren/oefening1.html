@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programmeren</title>
+    <link rel="stylesheet" href="../../css/styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+          <ul class="nav-menu">
+            <img src="../../img/Logo.svg" alt="Logo" class="menu-logo">
+            <li><a href="../../index.html">Over mij</a></li>
+            <li>
+              <a href="#" class="menu-toggle">Informatica</a>
+              <ul class="submenu">
+                <li><a href="../../programmeren.html">Programmeren</a></li>
+                <li><a href="#algoritmen">Algoritmen</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="#" class="menu-toggle">Digitale vaardigheden</a>
+              <ul class="submenu">
+                <li><a href="#mappen-en-bestanden">Mappen en bestanden</a></li>
+                <li><a href="#tekstverwerkers">Tekstverwerkers</a></li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+      </header>
+
+      <h1>Quiz</h1>
+
+      <div id="quiz-container"></div>
+      <button id="volgendeBtn" onclick="volgendeVraag()">Volgende vraag</button>
+      <button id="controleerBtn" onclick="controleerAntwoord()" style="display: none;">Controleer antwoord</button>
+      <button id="resultatenBtn" onclick="toonResultaten()" style="display: none;">Bekijk resultaten</button>
+
+      <script>
+        var vragen = [
+         {
+           vraag: "Wat is de hoofdstad van Frankrijk?",
+           antwoorden: {
+             a: "Londen",
+             b: "Parijs",
+             c: "Madrid",
+             d: "Rome"
+           },
+           juisteAntwoord: "b"
+         },
+         {
+           vraag: "Welk jaar werd de eerste iPhone uitgebracht?",
+           antwoorden: {
+             a: "2005",
+             b: "2007",
+             c: "2010",
+             d: "2012"
+           },
+           juisteAntwoord: "b"
+         },
+         {
+           vraag: "Wie is de uitvinder van Facebook?",
+           antwoorden: {
+             a: "Mark Zuckerberg",
+             b: "Jeff Bezos",
+             c: "Bill Gates",
+             d: "Elon Musk"
+           },
+           juisteAntwoord: "a"
+         },
+         {
+           vraag: "Welke kleur heeft een smaragd?",
+           antwoorden: {
+             a: "Rood",
+             b: "Blauw",
+             c: "Groen",
+             d: "Geel"
+           },
+           juisteAntwoord: "c"
+         },
+         {
+           vraag: "Welk land heeft de meeste Olympische medailles gewonnen?",
+           antwoorden: {
+             a: "Verenigde Staten",
+             b: "China",
+             c: "Rusland",
+             d: "Duitsland"
+           },
+           juisteAntwoord: "a"
+         },
+         {
+           vraag: "Hoeveel continenten zijn er op aarde?",
+           antwoorden: {
+             a: "4",
+             b: "5",
+             c: "6",
+             d: "7"
+           },
+           juisteAntwoord: "d"
+         },
+         {
+           vraag: "Wie heeft de relativiteitstheorie bedacht?",
+           antwoorden: {
+             a: "Albert Einstein",
+             b: "Isaac Newton",
+             c: "Galileo Galilei",
+             d: "Nikola Tesla"
+           },
+           juisteAntwoord: "a"
+         },
+         {
+           vraag: "Welk dier is het grootste landzoogdier ter wereld?",
+           antwoorden: {
+             a: "Olifant",
+             b: "Nijlpaard",
+             c: "Leeuw",
+             d: "IJsbeer"
+           },
+           juisteAntwoord: "d"
+         },
+         {
+           vraag: "Hoeveel planeten zijn er in ons zonnestelsel?",
+           antwoorden: {
+             a: "7",
+             b: "8",
+             c: "9",
+             d: "10"
+           },
+           juisteAntwoord: "b"
+         },
+         {
+           vraag: "Wat is de hoogste berg ter wereld?",
+           antwoorden: {
+             a: "Mount Everest",
+             b: "K2",
+             c: "Matterhorn",
+             d: "Kilimanjaro"
+           },
+           juisteAntwoord: "a"
+         }
+       ];
+   
+       var quizContainer = document.getElementById("quiz-container");
+       var vraagIndex = 0;
+       var gegevenAntwoorden = [];
+       var score = 0;
+   
+       function weergeefVraag() {
+         var huidigeVraag = vragen[vraagIndex];
+         var vraag = huidigeVraag.vraag;
+         var antwoorden = huidigeVraag.antwoorden;
+   
+         var vraagElement = document.createElement("div");
+         vraagElement.innerHTML = "<h3>Vraag " + (vraagIndex + 1) + ":</h3>";
+         vraagElement.innerHTML += "<p>" + vraag + "</p>";
+   
+         for (var key in antwoorden) {
+           var antwoordElement = document.createElement("input");
+           antwoordElement.setAttribute("type", "radio");
+           antwoordElement.setAttribute("name", "vraag" + vraagIndex);
+           antwoordElement.setAttribute("value", key);
+   
+           var labelElement = document.createElement("label");
+           labelElement.innerHTML = antwoorden[key];
+   
+           vraagElement.appendChild(antwoordElement);
+           vraagElement.appendChild(labelElement);
+           vraagElement.appendChild(document.createElement("br"));
+         }
+   
+         quizContainer.innerHTML = "";
+         quizContainer.appendChild(vraagElement);
+   
+         document.getElementById("volgendeBtn").style.display = "none";
+         document.getElementById("controleerBtn").style.display = "block";
+         document.getElementById("resultatenBtn").style.display = "none";
+       }
+   
+       function volgendeVraag() {
+         var geselecteerdAntwoord = document.querySelector('input[name="vraag' + vraagIndex + '"]:checked');
+   
+         if (geselecteerdAntwoord) {
+           var antwoord = geselecteerdAntwoord.value;
+           gegevenAntwoorden.push(antwoord);
+   
+           vraagIndex++;
+   
+           if (vraagIndex < vragen.length) {
+             weergeefVraag();
+           } else {
+             toonResultaten();
+           }
+         }
+       }
+   
+       function controleerAntwoord() {
+         var geselecteerdAntwoord = document.querySelector('input[name="vraag' + vraagIndex + '"]:checked');
+   
+         if (geselecteerdAntwoord) {
+           var antwoord = geselecteerdAntwoord.value;
+           gegevenAntwoorden.push(antwoord);
+   
+           var huidigeVraag = vragen[vraagIndex];
+           var juisteAntwoord = huidigeVraag.juisteAntwoord;
+   
+           var antwoordElement = document.createElement("p");
+           if (antwoord === juisteAntwoord) {
+             antwoordElement.innerHTML = "Juist!";
+             score++;
+           } else {
+             antwoordElement.innerHTML = "Fout!";
+           }
+   
+           quizContainer.appendChild(antwoordElement);
+   
+           document.getElementById("volgendeBtn").style.display = "block";
+           document.getElementById("controleerBtn").style.display = "none";
+           document.getElementById("resultatenBtn").style.display = "none";
+         }
+       }
+   
+       function toonResultaten() {
+         var resultatenElement = document.createElement("div");
+         resultatenElement.innerHTML = "<h3>Resultaten:</h3>";
+         resultatenElement.innerHTML += "<p>Score: " + score + "/" + vragen.length + "</p>";
+   
+         quizContainer.innerHTML = "";
+         quizContainer.appendChild(resultatenElement);
+   
+         document.getElementById("volgendeBtn").style.display = "none";
+         document.getElementById("controleerBtn").style.display = "none";
+         document.getElementById("resultatenBtn").style.display = "block";
+       }
+   
+       weergeefVraag();
+     </script>
+
+
+
+
+
+
+    <footer>
+        <p>&copy; 2023 EducateM Portfolio template. Alle rechten voorbehouden.<img src="/img/Logo.svg" alt="Logo" class="menu-logo"></p>
+      </footer>
+
+      <script src="../../js/script.js"></script>
+
+</body>
+</html>
