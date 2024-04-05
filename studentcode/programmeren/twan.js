@@ -6,7 +6,7 @@ let food = { x: 15, y: 15 };
 let direction = "right";
 
 function setup() {
-    canvas = createCanvas(750, 750);
+    canvas = createCanvas(750, 450);
     canvas.position(windowWidth / 2 - width / 2, 50);
 
     frameRate(10); // Adjust the frame rate as needed
